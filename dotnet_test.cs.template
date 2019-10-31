@@ -1,0 +1,34 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Guestlogix.TPP.Common.Exceptions;
+using Guestlogix.TPP.Common.Models;
+using Guestlogix.TPP.WebApi.Admin.Models;
+using Guestlogix.TPP.WebApi.Admin.Models.Order;
+using Newtonsoft.Json;
+using Xunit;
+
+namespace Guestlogix.TPP.WebApi.{{category}}.Test
+{
+    [TestCaseOrderer("Guestlogix.TPP.Test.Utils.PriorityOrderer", "Guestlogix.TPP.Test")]
+    [Collection("{{category}}")]
+    public class {{category}}ControllerTest : IClassFixture<WebApiFactoryBaseFixture>
+    {
+        private readonly WebApiFactoryBaseFixture _webApiFactoryBaseFixture;
+
+
+        [Fact]
+        public async Task {{category}}_{{test_name}}_Success()
+        {
+            var route = $"{{api_endpoint}}";
+            var jsonResponse = await _webApiFactoryBaseFixture.Get(route);
+            Assert.Equal(jsonResponse.status_code, HttpStatusCode.Ok)
+        }
+
+        public {{category}}ControllerTest(WebApiFactoryBaseFixture webApiFactoryBaseFixture)
+        {
+            _webApiFactoryBaseFixture = webApiFactoryBaseFixture;
+        }
+    }
+}

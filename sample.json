@@ -1,0 +1,317 @@
+{
+  "info": {
+    "_postman_id": "ffb6de86-c21f-4f0b-b8af-7a81240b149a",
+    "name": "Guest Admin API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Api server status",
+      "item": [
+        {
+          "name": "check API server status",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "14b2081d-c26d-4b5f-ab50-6a4f18129bfa",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "id": "3fb35466-8324-472d-a01e-e844a183e384",
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "_postman_id": "8710871c-392c-4254-8aa8-34da61e37844",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{admin_url}}/status"
+          },
+          "response": []
+        }
+      ],
+      "_postman_id": "7a89beb4-9c5e-435f-8e3c-acaa9b0a2bc1",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "id": "fcb81ee8-84a0-4e99-a4b2-1a8f01baaf09",
+            "type": "text/javascript",
+            "exec": [
+              ""
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "id": "1d594008-1a64-419c-8209-3834bb12029a",
+            "type": "text/javascript",
+            "exec": [
+              ""
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "auth",
+      "item": [
+        {
+          "name": "Obtain a JWT",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "244096f4-54e8-4fc5-8bee-411cb5de6e72",
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "    pm.environment.set(\"AccessTokenAdmin\", jsonData.token);",
+                  "   ",
+                  "//<---check whether the bearer token is empty--->",
+                  "    pm.test(\"Access token should be present\", function(){",
+                  "        pm.expect(!!jsonData.token).to.eql(true);",
+                  "    });",
+                  "    ",
+                  "pm.test(\"Status code should be 201\", function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "",
+                  ""
+                ],
+                "type": "text/javascript"
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "id": "e411e58d-cc89-491f-8154-02e993cd215c",
+                "exec": [
+                  ""
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "_postman_id": "bba99908-6191-42f6-932f-ec2fadebcf58",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "name": "Content-Type",
+                "type": "text",
+                "value": "application/json"
+              },
+              {
+                "key": "x-api-key",
+                "type": "text",
+                "value": "{{x-api-key}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"email\": \"support@guestlogix.com\",\r\n  \"password\": \"test\"\r\n}"
+            },
+            "url": "{{admin_url}}/auth/token",
+            "description": "Implementation Notes\n\nThis endpoint returns an auth token that is to be used in the Authorization header for all subsequent requests. It uses the deviceId headers to validate."
+          },
+          "response": []
+        }
+      ],
+      "_postman_id": "03b9ceda-ca66-48c9-8216-6c53ad8d47e9",
+      "description": "Folder for auth",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "id": "cad30475-6ad3-46c9-8e45-40dafdca961f",
+            "type": "text/javascript",
+            "exec": [
+              ""
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "id": "bd487568-d15a-4a0c-b8d9-9160ad432f1a",
+            "type": "text/javascript",
+            "exec": [
+              ""
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Add partner",
+      "item": [
+        {
+          "name": "Add new partner",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "7de61e34-f844-414a-bcf2-a50f5f0c300f",
+                "exec": [
+                  "pm.test(\"Status code is 201\", function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "id": "709b3c13-74ba-4c03-baf6-0a64d7c57a86",
+                "exec": [
+                  "\r",
+                  "var randomString = function(length) {\r",
+                  "    var text = \"\";\r",
+                  "    var possible = \"ABCDEFGHIJKLMNOPQRSTUVWXYZ\";\r",
+                  "    for(var i = 0; i < length; i++) {\r",
+                  "        text += possible.charAt(Math.floor(Math.random() * possible.length));\r",
+                  "    }\r",
+                  "    return text;\r",
+                  "}\r",
+                  "\r",
+                  "\r",
+                  "let publishableKey =  Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);\r",
+                  "let secretKey = Math.random().toString(30).substring(2, 15) + Math.random().toString(30).substring(2, 15);\r",
+                  "\r",
+                  "let companyCode = randomString(3);\r",
+                  "\r",
+                  "pm.environment.set(\"companyCode\", companyCode);\r",
+                  "pm.environment.set(\"publishableKey\", publishableKey);\r",
+                  "pm.environment.set(\"secretKey\", secretKey);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "_postman_id": "e2969cee-096e-4141-a07e-06bba8a1e370",
+          "protocolProfileBehavior": {
+            "disableBodyPruninbody[g": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": {
+                "token": "{{AccessTokenAdmin}}"
+              }
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "name": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "x-api-key",
+                "value": "{{x-api-key}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n\t\"companyCode\": \"{{companyCode}}\",\n\t\"companyName\": \"KaKUNA\",\n\t\"companyAccess\": {\n\t\t\"publishableKey\": \"{{publishableKey}}\",\n\t\t\"secretKey\": \"{{secretKey}}\",\n\t\t\"expirationDate\": \"2019-05-27T18:54:06.914Z\"\n\t}\n\t\n}"
+            },
+            "url": "{{admin_url}}/partner",
+            "description": "Creates a new company"
+          },
+          "response": []
+        },
+        {
+          "name": "Add already existing company",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "id": "1b20f62f-87b3-4bf7-acd8-182e3d949398",
+                "exec": [
+                  "pm.test(\"Status code is 400\", function () {",
+                  "    pm.response.to.have.status(400);",
+                  "});",
+                  "pm.test(\"errorCode\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.errorCode).to.eql(7001);",
+                  "});",
+                  "",
+                  "pm.test(\"errorMessage\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.errorMessage).to.eql(\"Company already exists\");",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "_postman_id": "c586a3cc-4ba8-4cc2-948f-16c63162b0bf",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": {
+                "token": "{{AccessTokenAdmin}}"
+              }
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "name": "Content-Type",
+                "type": "text",
+                "value": "application/json"
+              },
+              {
+                "key": "x-api-key",
+                "type": "text",
+                "value": "{{x-api-key}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n\t\"companyCode\": \"AY\",\n\t\"companyName\": \"WWW\",\n\t\"companyAccess\": {\n\t\t\"publishableKey\": \"4r53e67v\",\n\t\t\"secretKey\": \"sectorsectorsectorsector\",\n\t\t\"expirationDate\": \"2019-05-20T18:54:06.914Z\"\n\t}\n\t\n}"
+            },
+            "url": "{{admin_url}}/partner",
+            "description": "validate scenario where admin want to add already company"
+          },
+          "response": []
+        }
+      ],
+      "_postman_id": "ab6a313c-d037-441b-8425-590507c977b6"
+    }
+  ]
+}
